@@ -8,3 +8,6 @@ else
 
 // Error Config
 ini_set('display_errors', 1);
+
+//Show hide file
+define('SHOW_HIDE_FILE', false);
