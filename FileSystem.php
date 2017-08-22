@@ -28,7 +28,18 @@ class FileSystem
         
         $cwd = getcwd();
         foreach ($list as $file) {
-            echo "<a href=\"index.php?dir=$cwd/$file\" > $file </a>" . END_LINE;
+            $ext = '';
+            $path = $name = $file;
+            if($file == '..')
+            {
+                $name = '<-- Parent Directory';
+            }
+            if(is_dir($file) && $file != '..')
+                $name .= '/';
+            
+            echo "<a href=\"index.php?dir=$cwd/$path\" > $name </a>" ;
+            
+            echo  END_LINE;
         }
     }
 }
