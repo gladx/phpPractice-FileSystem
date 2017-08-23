@@ -81,23 +81,37 @@ class FileSystem
 
     public function delete($src, $confirm = 'N')
     {
-        if (!file_exists($src)) {
-            echo 'File: ' .$src .' Not Found .'. END_LINE;
-            return;
-        } elseif (!$confirm) {
-            echo "Notic : Are you sure delete $src? [Y/N]" . END_LINE;
-            return;
-        }
-        
-        if (strtolower($confirm) == 'y') {
-            if (unlink($src)) {
-                echo "Successful Delete $src " . END_LINE;
-            } else {
-                echo "Faild delete $src " . END_LINE;
+        if (is_file($src)) {
+            if (!file_exists($src)) {
+                echo 'File: ' .$src .' Not Found .'. END_LINE;
+                return;
+            } elseif (!$confirm) {
+                echo "Notice : Are you sure delete $src? [Y/N]" . END_LINE;
+                return;
             }
+        
+            if (strtolower($confirm) == 'y') {
+                if (unlink($src)) {
+                    echo "Successful Delete $src " . END_LINE;
+                } else {
+                    echo "Faild delete $src " . END_LINE;
+                }
+            } else {
+                echo "Canceled  delete $src " . END_LINE;
+            }
+        } else if(is_dir($src)) {
+            echo 'Under construction ' . END_LINE; //TODO Delete All files 
         }
-        else {
-            echo "Canceled  delete $src " . END_LINE;
-        }
+    }
+
+    public function mkdir($path, $mode = '0777', $recursive = true)
+    {
+       if(mkdir($path, $mode, $recursive))
+       {
+        echo "Successful Create path $path " . END_LINE;
+       }
+       else {
+        echo "Failed to create path $path " . END_LINE;
+       }
     }
 }
