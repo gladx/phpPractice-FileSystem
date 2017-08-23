@@ -81,26 +81,28 @@ class FileSystem
 
     public function delete($src, $confirm = 'N')
     {
-        if (is_file($src)) {
-            if (!file_exists($src)) {
-                echo 'File: ' .$src .' Not Found .'. END_LINE;
-                return;
-            } elseif (!$confirm) {
-                echo "Notice : Are you sure delete $src? [Y/N]" . END_LINE;
-                return;
-            }
+        // if (is_file($src)) {
+        if (!file_exists($src)) {
+            echo 'File: ' .$src .' Not Found .'. END_LINE;
+            return;
+        } elseif (!$confirm) {
+            echo "Notice : Are you sure delete $src? [Y/N]" . END_LINE;
+            return;
+        }
         
-            if (strtolower($confirm) == 'y') {
+        if (strtolower($confirm) == 'y') {
+            if (is_file($src)) {
                 if (unlink($src)) {
                     echo "Successful Delete $src " . END_LINE;
                 } else {
                     echo "Faild delete $src " . END_LINE;
                 }
-            } else {
-                echo "Canceled  delete $src " . END_LINE;
+            } elseif (is_dir($src)) {
+                $this->deleteDir($src); 
+                // TODO Show Message for delete
             }
-        } elseif (is_dir($src)) {
-            echo 'Under construction ' . END_LINE; //TODO Delete All files
+        } else {
+            echo "Canceled  delete $src " . END_LINE;
         }
     }
 
@@ -111,5 +113,24 @@ class FileSystem
         } else {
             echo "Failed to create path $path " . END_LINE;
         }
+    }
+
+    // https://stackoverflow.com/a/3349792
+    public function deleteDir($dirPath) {
+        if (! is_dir($dirPath)) {
+            throw new InvalidArgumentException("$dirPath must be a directory");
+        }
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+            $dirPath .= '/';
+        }
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                self::deleteDir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dirPath);
     }
 }
