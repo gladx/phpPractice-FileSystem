@@ -55,30 +55,49 @@ class FileSystem
      *
      * Convert bytes to human readable
      */
-     function human_filesize($bytes, $decimals = 2)
-     {
-         if ($bytes < 1024) {
-             return $bytes . ' B';
-         }
+    public function human_filesize($bytes, $decimals = 2)
+    {
+        if ($bytes < 1024) {
+            return $bytes . ' B';
+        }
      
-         $factor = floor(log($bytes, 1024));
-         return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . ['B', 'KB', 'MB', 'GB', 'TB', 'PB'][$factor];
-     }
+        $factor = floor(log($bytes, 1024));
+        return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . ['B', 'KB', 'MB', 'GB', 'TB', 'PB'][$factor];
+    }
 
     public function copy($src, $dest)
     {
-        if(file_exists($dest)){
+        if (file_exists($dest)) {
             echo 'File: ' .$dest .' before exists, choose another name'. END_LINE;
             return;
         }
         
-        if(copy($src, $dest))
-        {
+        if (copy($src, $dest)) {
             echo "Successful copy $src to $dest " . END_LINE;
+        } else {
+            echo "Faild Copy $src " . END_LINE;
         }
-        else
-        {
-            echo "Faild Copy $src \n" . END_LINE; 
+    }
+
+    public function delete($src, $confirm = 'N')
+    {
+        if (!file_exists($src)) {
+            echo 'File: ' .$src .' Not Found .'. END_LINE;
+            return;
+        } elseif (!$confirm) {
+            echo "Notic : Are you sure delete $src? [Y/N]" . END_LINE;
+            return;
+        }
+        
+        if (strtolower($confirm) == 'y') {
+            if (unlink($src)) {
+                echo "Successful Delete $src " . END_LINE;
+            } else {
+                echo "Faild delete $src " . END_LINE;
+            }
+        }
+        else {
+            echo "Canceled  delete $src " . END_LINE;
         }
     }
 }

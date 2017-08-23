@@ -17,7 +17,11 @@ switch($cmd)
 {
     case 'copy' :
         $fs->copy( $_GET['src'],  $_GET['dest']);
-    break;
+        break;
+    case 'delete' :
+        $fs->delete( $_GET['src'], @$_GET['confirm']);
+        break;
+break;
 }
-
+print_r($_GET);
 $fs->showList();
