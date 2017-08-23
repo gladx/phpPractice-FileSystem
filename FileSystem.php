@@ -55,15 +55,15 @@ class FileSystem
      *
      * Convert bytes to human readable
      */
-    public function human_filesize($bytes, $decimals = 2)
-    {
-        $sz = 'BKMGTP';
-        $factor = floor((strlen($bytes) - 1) / 3);
-        if ($bytes < 1024 || ($bytes%1024 == 0)) {
-            return sprintf("%ld", $bytes / pow(1024, $factor)) . @$sz[$factor];
-        }
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-    }
+     function human_filesize($bytes, $decimals = 2)
+     {
+         if ($bytes < 1024) {
+             return $bytes . ' B';
+         }
+     
+         $factor = floor(log($bytes, 1024));
+         return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . ['B', 'KB', 'MB', 'GB', 'TB', 'PB'][$factor];
+     }
 
     public function copy($src, $dest)
     {
