@@ -99,19 +99,17 @@ class FileSystem
             } else {
                 echo "Canceled  delete $src " . END_LINE;
             }
-        } else if(is_dir($src)) {
-            echo 'Under construction ' . END_LINE; //TODO Delete All files 
+        } elseif (is_dir($src)) {
+            echo 'Under construction ' . END_LINE; //TODO Delete All files
         }
     }
 
-    public function mkdir($path, $mode = '0777', $recursive = true)
+    public function mkdir($path, $mode = 0777, $recursive = true)
     {
-       if(mkdir($path, $mode, $recursive))
-       {
-        echo "Successful Create path $path " . END_LINE;
-       }
-       else {
-        echo "Failed to create path $path " . END_LINE;
-       }
+        if (mkdir($path, $mode, $recursive)) {
+            echo "Successful Create path $path " . END_LINE;
+        } else {
+            echo "Failed to create path $path " . END_LINE;
+        }
     }
 }
