@@ -43,10 +43,9 @@ class FileSystem
 
             if (is_file($file)) {
                 $info = 'size: ' . $this->human_filesize(filesize($file));
-                $info .=  ' ' . $this->getAccessTime($file);
-                $info .=  ' ' . $this->getChangeTime($file);
-                $info .=  ' ' . $this->getModifyTime($file);
-                
+                $info .=  '| ' . $this->getAccessTime($file);
+                $info .=  '| ' . $this->getChangeTime($file);
+                $info .=  '| ' . $this->getModifyTime($file);
             }
             if ($file != '..') {
                 $info .=  ' ' . $this->getPermission($file);
@@ -107,7 +106,7 @@ class FileSystem
                     echo "Faild delete $src " . END_LINE;
                 }
             } elseif (is_dir($src)) {
-                $this->deleteDir($src); 
+                $this->deleteDir($src);
                 // TODO Show Message for delete
             }
         } else {
@@ -125,7 +124,8 @@ class FileSystem
     }
 
     // https://stackoverflow.com/a/3349792
-    public function deleteDir($dirPath) {
+    public function deleteDir($dirPath)
+    {
         if (! is_dir($dirPath)) {
             throw new InvalidArgumentException("$dirPath must be a directory");
         }
@@ -145,8 +145,7 @@ class FileSystem
 
     public function mv($oldPath, $newPath)
     {
-
-        if(file_exists($oldPath) && rename($oldPath, $newPath)){
+        if (file_exists($oldPath) && rename($oldPath, $newPath)) {
             echo "Move/Rename from $oldPath to $newPath is Successfull" . END_LINE;
         } else {
             echo "Move/Rename is Failed ." . END_LINE;
@@ -188,27 +187,27 @@ class FileSystem
         $info .= (($perms & 0x0100) ? 'r' : '-');
         $info .= (($perms & 0x0080) ? 'w' : '-');
         $info .= (($perms & 0x0040) ?
-                    (($perms & 0x0800) ? 's' : 'x' ) :
+                    (($perms & 0x0800) ? 's' : 'x') :
                     (($perms & 0x0800) ? 'S' : '-'));
         
         // Group
         $info .= (($perms & 0x0020) ? 'r' : '-');
         $info .= (($perms & 0x0010) ? 'w' : '-');
         $info .= (($perms & 0x0008) ?
-                    (($perms & 0x0400) ? 's' : 'x' ) :
+                    (($perms & 0x0400) ? 's' : 'x') :
                     (($perms & 0x0400) ? 'S' : '-'));
         
         // World
         $info .= (($perms & 0x0004) ? 'r' : '-');
         $info .= (($perms & 0x0002) ? 'w' : '-');
         $info .= (($perms & 0x0001) ?
-                    (($perms & 0x0200) ? 't' : 'x' ) :
+                    (($perms & 0x0200) ? 't' : 'x') :
                     (($perms & 0x0200) ? 'T' : '-'));
         
         return $info;
-    } 
+    }
 
-    public function getOwner($src) 
+    public function getOwner($src)
     {
         return posix_getgrgid(filegroup($src))['name'];
     }
@@ -218,18 +217,18 @@ class FileSystem
         return posix_getgrgid((filegroup($src)))['name'];
     }
 
-    public function getAccessTime($src)
+    public function getAccessTime($src, $fmt = "d M H:i")
     {
-        return date("d M H:i |", fileatime($src));
+        return date($fmt, fileatime($src));
     }
 
-    public function getChangeTime($src)
+    public function getChangeTime($src, $fmt = "d M H:i")
     {
-        return date("d M H:i |", filectime($src));
+        return date($fmt, filectime($src));
     }
 
-    public function getModifyTime($src)
+    public function getModifyTime($src, $fmt = "d M H:i")
     {
-        return date("d M H:i |", filemtime($src));
+        return date($fmt, filemtime($src));
     }
 }
