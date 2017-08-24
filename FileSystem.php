@@ -47,6 +47,7 @@ class FileSystem
             }
             if ($file != '..') {
                 $info .=  ' ' . $this->getPermission($file);
+                $info .=  ' ' . $this->getOwner($file);
             }
 
             echo "<a href=\"index.php?dir=$cwd/$path\" > $name </a>\t" ;
@@ -201,5 +202,10 @@ class FileSystem
                     (($perms & 0x0200) ? 'T' : '-'));
         
         return $info;
+    } 
+
+    public function getOwner($src) 
+    {
+        return posix_getgrgid(filegroup($src))['name'];
     }
 }
