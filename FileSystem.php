@@ -48,6 +48,7 @@ class FileSystem
             if ($file != '..') {
                 $info .=  ' ' . $this->getPermission($file);
                 $info .=  ' ' . $this->getOwner($file);
+                $info .=  ' ' . $this->getGroup($file);
             }
 
             echo "<a href=\"index.php?dir=$cwd/$path\" > $name </a>\t" ;
@@ -207,5 +208,10 @@ class FileSystem
     public function getOwner($src) 
     {
         return posix_getgrgid(filegroup($src))['name'];
+    }
+
+    public function getGroup($src)
+    {
+        return posix_getgrgid((filegroup($src)))['name'];
     }
 }
