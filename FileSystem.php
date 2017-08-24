@@ -133,4 +133,14 @@ class FileSystem
         }
         rmdir($dirPath);
     }
+
+    public function mv($oldPath, $newPath)
+    {
+
+        if(file_exists($oldPath) && rename($oldPath, $newPath)){
+            echo "Move/Rename from $oldPath to $newPath is Successfull" . END_LINE;
+        } else {
+            echo "Move/Rename is Failed ." . END_LINE;
+        }
+    }
 }

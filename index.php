@@ -22,6 +22,9 @@ if (isset($_GET['cmd'])) {
         case 'mkdir':
             $fs->mkdir($_GET['path']);
             break;
+        case 'mv':
+            $fs->mv($_GET['oldpath'], $_GET['newpath']);
+            break;
         default:
             echo 'Faild Command ' . END_LINE;
             break;
