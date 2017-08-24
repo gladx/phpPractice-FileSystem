@@ -41,17 +41,19 @@ class FileSystem
                 $name .= '/';
             }
 
-            if (is_file($file)) {
-                $info = 'size: ' . $this->human_filesize(filesize($file));
-                $info .=  '| ' . $this->getAccessTime($file);
-                $info .=  '| ' . $this->getChangeTime($file);
-                $info .=  '| ' . $this->getModifyTime($file);
-            }
             if ($file != '..') {
                 $info .=  ' ' . $this->getPermission($file);
                 $info .=  ' ' . $this->getOwner($file);
                 $info .=  ' ' . $this->getGroup($file);
             }
+            
+            if (is_file($file)) {
+                $info .= ' ' . $this->human_filesize(filesize($file));
+                $info .= '| ' . $this->getAccessTime($file);
+                $info .= '| ' . $this->getChangeTime($file);
+                $info .= '| ' . $this->getModifyTime($file);
+            }
+
 
             echo "<a href=\"index.php?dir=$cwd/$path\" > $name </a>\t" ;
             echo $info;
