@@ -43,6 +43,9 @@ class FileSystem
 
             if (is_file($file)) {
                 $info = 'size: ' . $this->human_filesize(filesize($file));
+                $info .=  ' ' . $this->getAccessTime($file);
+                $info .=  ' ' . $this->getChangeTime($file);
+                $info .=  ' ' . $this->getModifyTime($file);
                 
             }
             if ($file != '..') {
@@ -213,5 +216,20 @@ class FileSystem
     public function getGroup($src)
     {
         return posix_getgrgid((filegroup($src)))['name'];
+    }
+
+    public function getAccessTime($src)
+    {
+        return date("d M H:i |", fileatime($src));
+    }
+
+    public function getChangeTime($src)
+    {
+        return date("d M H:i |", filectime($src));
+    }
+
+    public function getModifyTime($src)
+    {
+        return date("d M H:i |", filemtime($src));
     }
 }
